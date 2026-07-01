@@ -1,0 +1,9 @@
+odin version dev-2026-06-nightly:7ab61e4
+
+fmod studio 2.02.15
+
+emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 4.0.22 (0f3d2e62bccf8e14497ff19e05a1202c51eb0c65)
+clang version 22.0.0git (https:/github.com/llvm/llvm-project c7706d9472fe880ba1d3418919ad4185710c9559)
+Target: wasm32-unknown-emscripten
+Thread model: posix
+InstalledDir: /home/ayush/.local/emsdk/upstream/bin

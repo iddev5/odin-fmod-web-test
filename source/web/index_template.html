@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<title>On the Hills - DeepFriedTech</title>
+	<meta name="title" content="On the Hills">
+	<meta name="description" content="On the Hills is a platformer game">
+	<meta name="viewport" content="width=device-width">
+
+	<style>
+		body { 
+			margin: 0;
+			background-color: black;
+		}
+		canvas.game_canvas {
+			position: absolute;
+			top: 0px;
+			left: 50%;
+			margin: 0px;
+			border: 0;
+			/* TODO: some way to pass canvas size */
+			width: 1080px;
+			height: 720px;
+			transform: translateX(-50%);
+			overflow: hidden;
+			display: block;
+			image-rendering: optimizeSpeed;
+			image-rendering: -moz-crisp-edges;
+			image-rendering: -o-crisp-edges;
+			image-rendering: -webkit-optimize-contrast;
+			image-rendering: optimize-contrast;
+			image-rendering: crisp-edges;
+			image-rendering: pixelated;
+			-ms-interpolation-mode: nearest-neighbor;
+		}
+	</style>
+</head>
+<body>
+	<canvas class="game_canvas" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1" onmousedown="event.target.focus()" onkeydown="event.preventDefault()"></canvas>
+
+	<script type="text/javascript" src="odin.js"></script>
+	<script>
+		var odinMemoryInterface = new odin.WasmMemoryInterface();
+
+		// `4` for `js_wasm32` target, `8` for `js_wasm64p32` target.
+		odinMemoryInterface.setIntSize(4);
+		var odinImports = odin.setupDefaultImports(odinMemoryInterface);
+
+		// The Module is used as configuration for emscripten.
+		var Module = {
+			// This is called by emscripten when it starts up.
+			instantiateWasm: (imports, successCallback) => {
+				const newImports = {
+					...odinImports,
+					...imports
+				}
+
+				// This will load the WASM file with the game inside. It will
+				// use both the emscripten and odin.js imports. This makes it
+				// possible to use the `js` "OS" in our Odin code.
+				return WebAssembly.instantiateStreaming(fetch("index.wasm"), newImports).then(function(output) {
+					odinMemoryInterface.setExports(output.instance.exports)
+					odinMemoryInterface.setMemory(output.instance.exports.memory)
+					return successCallback(output.instance);
+				});
+			},
+			// This happens a bit after `instantiateWasm`, when everything is
+			// done setting up. At that point we can run code.
+			onRuntimeInitialized: () => {
+				// This calls all procedures tagged with `@init` and then
+				// it calls the `main` proc (see `source/main.odin`). Any procs
+				// marked with `@fini` are called when sokol shuts down.
+				//
+				// `wasmExports` is same thing as `output.instance.exports` in
+				// `instantiateWasm`
+				wasmExports._start()
+			},
+			print: (function() {
+				var element = document.getElementById("output");
+				if (element) element.value = ''; // clear browser cache
+				return function(text) {
+					if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+					console.log(text);
+					if (element) {
+					  element.value += text + "\n";
+					  element.scrollTop = element.scrollHeight; // focus on bottom
+					}
+				};
+			})(),
+			canvas: (function() {
+				return document.getElementById("canvas");
+			})()
+		};
+	</script>
+
+	<!-- Emscripten injects its javascript here -->
+	{{{ SCRIPT }}}
+</body>
+</html>

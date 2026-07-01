@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{4f6b64c4-6a4f-4863-a21f-8ffbc88e8cf4}">
+		<property name="assetPath">
+			<value>858467__ym_the_cosmic__flipping-page-back.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.62693877551020405</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{645d4362-b399-453a-b5c3-9a546bbf6db8}</destination>
+		</relationship>
+	</object>
+</objects>

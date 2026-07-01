@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{7db5b3a6-28ad-45cc-876c-423d5b959383}">
+		<property name="assetPath">
+			<value>monume-summer-519246.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>116.1665306122449</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{645d4362-b399-453a-b5c3-9a546bbf6db8}</destination>
+		</relationship>
+	</object>
+</objects>
